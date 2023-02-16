@@ -1,0 +1,75 @@
+
+import sqlite3
+conn = sqlite3.connect('test.db')
+print("connect scuccessful")
+c = conn.cursor()
+c.executescript('''
+DROP TABLE IF EXISTS PLATE;
+DROP TABLE IF EXISTS EVENT;
+DROP TABLE IF EXISTS CAMERA;
+DROP TABLE IF EXISTS TRACK;
+DROP TABLE IF EXISTS LOG;
+DROP TABLE IF EXISTS SEARCH;
+''')
+
+c.executescript('''
+  CREATE TABLE PLATE (
+   platenum	TEXT    PRIMARY KEY, -- 車牌
+   carcolor	INT	NOT NULL,    -- 車色
+   cartype	INT     NOT NULL  -- 車型
+  );
+
+  CREATE TABLE EVENT (
+    eventID	 TEXT  PIMARY KEY, -- 事件編號
+    platenum    TEXT , -- 車牌
+    cameraID    TEXT , -- 監視器編號
+    address     TEXT  NOT NULL,
+    startime 	 DATETIME  NOT NULL, -- 起
+    endtime     DATETIME  NOT NULL,  -- 末
+    FOREIGN KEY(platenum) REFERENCES TRACK(platenum),
+    FOREIGN KEY(cameraID) REFERENCES CAMERA(cameraID),
+    FOREIGN KEY(eventID)  REFERENCES TRACK(eventID)
+  ); 
+
+  CREATE TABLE CAMERA (
+    cameraID      TEXT  PRIMARY KEY , -- 監視器編號
+    address       TEXT  NOT NULL,
+    cameraname    TEXT, -- 監視器名稱
+    level1        TEXT  NOT NULL, -- 管理該監視器的警察局
+    level2        TEXT  NOT NULL, -- 管理該監視器的分局
+    level3        TEXT  NOT NULL, -- 管理該監視器的派出所
+    latitude      REAL  NOT NULL, 
+    longitude     REAL  NOT NULL,
+    azimuthAngle  INT CHECK( azimuthAngle>=0 AND  azimuthAngle<=360), -- 方位角,
+    status 	   INT CHECK(status>=0 AND status<=2)  NOT NULL -- 監視器狀態
+  );
+  
+  CREATE TABLE TRACK(
+    eventID	 TEXT      PRIMARY KEY, -- 事件編號
+    cameraID    TEXT, -- 監視器編號
+    platenum    TEXT,
+    getfileURI  TEXT      NOT NULL, -- 影片連結
+    getsnapshot TEXT      NOT NULL, -- 快照連結
+    eventtime   DATETIME  NOT NULL,
+    FOREIGN KEY(cameraID) REFERENCES CAMERA(cameraID), 
+    FOREIGN KEY(platenum) REFERENCES PLATE(platenum)
+  );
+
+  CREATE TABLE LOG(
+    errortype    INT,       -- 錯誤類型
+    msg          TEXT      -- 錯誤訊息
+  );
+
+  CREATE TABLE SEARCH(
+    eventID	        TEXT     NOT NULL, -- 事件編號
+    name	        TEXT     NOT NULL, --查詢人名稱
+    reason             TEXT     NOT NULL, -- 案由
+    caseID 	        TEXT	  NOT NULL, -- 案號
+    searchtime 	 DATETIME  NOT NULL, -- 時間
+    times	        INT	  NOT NULL, -- 查詢次數
+    FOREIGN KEY(eventID) REFERENCES TRACK(eventID)
+  );
+''')
+print("create successful");
+conn.commit()
+conn.close()
