@@ -1,6 +1,6 @@
 
 import sqlite3
-conn = sqlite3.connect('test.db')
+conn = sqlite3.connect('.db')
 print("connect scuccessful")
 c = conn.cursor()
 c.executescript('''
