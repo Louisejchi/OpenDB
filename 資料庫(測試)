@@ -14,27 +14,27 @@ DROP TABLE IF EXISTS SEARCH;
 
 c.executescript('''
   CREATE TABLE PLATE (
-   platenum	NVARCHAR(50)    PRIMARY KEY, -- 車牌
-   carcolor	INT,  -- 車色
-   cartype	INT    -- 車型
-  );
+   plateNum	NVARCHAR(50)    PRIMARY KEY, -- 車牌
+   carColor	INT,  -- 車色
+   carType	INT    -- 車型
+  ); 
 
   CREATE TABLE EVENT (
     eventID	    NVARCHAR(40)  PIMARY KEY, -- 事件編號
-    platenum    NVARCHAR(10) , -- 車牌
+    plateNum    NVARCHAR(10) , -- 車牌
     cameraID    NVARCHAR(40) , -- 監視器編號
     address     NVARCHAR(200)  NOT NULL,
-    startime 	DATETIME  NOT NULL, -- 起
-    endtime     DATETIME  NOT NULL,  -- 末
-    FOREIGN KEY(platenum) REFERENCES TRACK(platenum),
+    starTime 	DATETIME  NOT NULL, -- 起
+    endTime     DATETIME  NOT NULL,  -- 末
+    FOREIGN KEY(plateNum) REFERENCES TRACK(plateNum),
     FOREIGN KEY(cameraID) REFERENCES CAMERA(cameraID),
     FOREIGN KEY(eventID)  REFERENCES TRACK(eventID)
-  ); 
+); 
 
   CREATE TABLE CAMERA (
     cameraID      NVARCHAR(40)   PRIMARY KEY , -- 監視器編號
     address       NVARCHAR(200)   NOT NULL,
-    cameraname    NVARCHAR(20), -- 監視器名稱
+    cameraName    NVARCHAR(20), -- 監視器名稱
     
     level1        NVARCHAR(100)  NOT NULL, -- 管理該監視器的警察局
     level2        NVARCHAR(100)  NOT NULL, -- 管理該監視器的分局
@@ -47,33 +47,33 @@ c.executescript('''
     longitude     REAL  NOT NULL,
     azimuthAngle  INT CHECK( azimuthAngle>=0 AND  azimuthAngle<=360), -- 方位角,
     status 	   INT CHECK(status>=0 AND status<=2)  NOT NULL -- 監視器狀態
-  );
+);
   
   CREATE TABLE TRACK(
-    eventID	    NVARCHAR(40)      PRIMARY KEY, -- 事件編號
+    eventID	 NVARCHAR(40)      PRIMARY KEY, -- 事件編號
     cameraID    NVARCHAR(40), -- 監視器編號
-    platenum    NVARCHAR(50),
-    getfileURI  Nvarchar(250)      NOT NULL, -- 影片連結
-    getsnapshot Nvarchar(250)      NOT NULL, -- 快照連結
-    eventtime   DATETIME  NOT NULL,
+    plateNum    NVARCHAR(50),
+    getFileURI  NVARCHAR(250)      NOT NULL, -- 影片連結
+    getSnapShot NVARCHAR(250)      NOT NULL, -- 快照連結
+    getTrack    NVARCHAR(250)      NOT NULL, -- 軌跡、事件紀錄清單
+    eventTime   DATETIME  NOT NULL,
     FOREIGN KEY(cameraID) REFERENCES CAMERA(cameraID), 
-    FOREIGN KEY(platenum) REFERENCES PLATE(platenum)
-  );
-
-  CREATE TABLE LOG(
-    errortype    INT,       -- 錯誤類型
+    FOREIGN KEY(plateNum) REFERENCES PLATE(plateNum)
+);
+ CREATE TABLE LOG(
+    errorType    INT,       -- 錯誤類型
     msg          NVARCHAR(200)      -- 錯誤訊息
-  );
+);
 
-  CREATE TABLE SEARCH(
+ CREATE TABLE SEARCH (
     eventID	        NVARCHAR(40)  NOT NULL, -- 事件編號
-    name	          NVARCHAR(30)   NOT NULL, --查詢人名稱
-    reason          NVARCHAR(200)   NOT NULL, -- 案由
+    name	        NVARCHAR(30)   NOT NULL, --查詢人名稱
+    reason             NVARCHAR(200)   NOT NULL, -- 案由
     caseID 	        NVARCHAR(5)	  NOT NULL, -- 案號
-    searchtime 	    DATETIME         NOT NULL, -- 時間
-    times	          INT	          NOT NULL, -- 查詢次數
+    searchTime 	DATETIME         NOT NULL, -- 時間
+    times	        INT	          NOT NULL, -- 查詢次數
     FOREIGN KEY(eventID) REFERENCES TRACK(eventID)
-  );
+);
 ''')
 print("create successful");
 conn.commit()
