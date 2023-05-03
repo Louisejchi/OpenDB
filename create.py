@@ -1,4 +1,5 @@
 import sqlite3
+<<<<<<< HEAD
 conn = sqlite3.connect('/home/OPEN/sql_test1.db')
 print("connect scuccessful")
 c = conn.cursor()
@@ -8,13 +9,28 @@ DROP TABLE IF EXISTS EVENT;
 -- DROP TABLE IF EXISTS TCASE;
 -- DROP TABLE IF EXISTS LOG;
 -- DROP TABLE IF EXISTS PERSON;
+=======
+conn = sqlite3.connect('sql_test1.db')
+print("connect scuccessful")
+c = conn.cursor()
+c.executescript('''
+DROP TABLE IF EXISTS PLATE;
+DROP TABLE IF EXISTS EVENT;
+DROP TABLE IF EXISTS CAMERA;
+DROP TABLE IF EXISTS TRACK;
+DROP TABLE IF EXISTS LOG;
+>>>>>>> 526c87d2e230a0a737753f958fe46384ff23d963
 DROP TABLE IF EXISTS SEARCH;
 ''')
 
 c.executescript('''
 
   CREATE TABLE EVENT (
+<<<<<<< HEAD
     eventID	 INTEGER PRIMARY KEY AUTOINCREMENT, -- 事件編號
+=======
+    eventID	 NVARCHAR(40)  PRIMARY KEY, -- 事件編號
+>>>>>>> 526c87d2e230a0a737753f958fe46384ff23d963
     plateNum    NVARCHAR(10) , -- 車牌
     carColor	INT,  -- 車色
     carType	INT,    -- 車型
@@ -51,8 +67,13 @@ CREATE TABLE LOG(
 );
 
 CREATE TABLE SEARCH (
+<<<<<<< HEAD
     searchID           INTEGER PRIMARY KEY AUTOINCREMENT, -- 每次搜尋產生的ID
     eventID	       INT NOT NULL, -- 事件編號
+=======
+    searchID           NVARCHAR(40)   NOT NULL, -- 每次搜尋產生的ID
+    eventID	        NVARCHAR(40)   NOT NULL, -- 事件編號
+>>>>>>> 526c87d2e230a0a737753f958fe46384ff23d963
     personID           NVARCHAR(50)    NOT NULL, --查詢人 ID
     caseID 	        NVARCHAR(30)	 NOT NULL, -- 案號
     searchTime 	DATETIME        NOT NULL, -- 時間
@@ -66,14 +87,18 @@ CREATE TABLE TCASE(
     reason             NVARCHAR(200)   NOT NULL, -- 案由  : 選單
     reasonDetail       NVARCHAR(1000)   NOT NULL -- 案由 : 用填寫
 );
+<<<<<<< HEAD
 CREATE TABLE PERSON(
     personID           NVARCHAR(50)    PRIMARY KEY, --查詢人 ID
     name	        NVARCHAR(30)    NOT NULL --查詢人名稱
 );
+=======
+>>>>>>> 526c87d2e230a0a737753f958fe46384ff23d963
 ''')
 print("create successful");
 conn.commit()
 conn.close()
+<<<<<<< HEAD
 
 
 
@@ -88,3 +113,5 @@ conn.close()
 
 
 
+=======
+>>>>>>> 526c87d2e230a0a737753f958fe46384ff23d963
