@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS SEARCH;
 c.executescript('''
 
   CREATE TABLE EVENT (
-    eventID	INTERGER PRIMARY KEY AUTOINCREMENT, -- 事件編號
+    eventID	 INTEGER PRIMARY KEY AUTOINCREMENT, -- 事件編號
     plateNum    NVARCHAR(10) , -- 車牌
     carColor	INT,  -- 車色
     carType	INT,    -- 車型
@@ -51,7 +51,7 @@ CREATE TABLE LOG(
 );
 
 CREATE TABLE SEARCH (
-    searchID           INTERGER PRIMARY KEY AUTOINCREMENT, -- 每次搜尋產生的ID
+    searchID           INTEGER PRIMARY KEY AUTOINCREMENT, -- 每次搜尋產生的ID
     eventID	       INT NOT NULL, -- 事件編號
     personID           NVARCHAR(50)    NOT NULL, --查詢人 ID
     caseID 	        NVARCHAR(30)	 NOT NULL, -- 案號
